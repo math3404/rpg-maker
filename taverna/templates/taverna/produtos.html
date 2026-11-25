@@ -18,7 +18,21 @@
                 {% if produto.foto %}
                     <img class="card-cover" src="{{ produto.foto }}" alt="{{ produto.nome }}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{% static "taverna/img/placeholder-rpg.svg" %}'">
                 {% else %}
-                    <img class="card-cover" src="{% static 'taverna/img/placeholder-rpg.svg' %}" alt="Ilustração de item de RPG">
+                    {% if produto.nome == "Poção de Vida" %}
+                        <img class="card-cover item-art" src="{% static 'taverna/img/itens/pocao-de-vida.svg' %}" alt="Poção de Vida">
+                    {% elif produto.nome == "Elixir de Mana" %}
+                        <img class="card-cover item-art" src="{% static 'taverna/img/itens/elixir-de-mana.svg' %}" alt="Elixir de Mana">
+                    {% elif produto.nome == "Espada de Ferro" %}
+                        <img class="card-cover item-art" src="{% static 'taverna/img/itens/espada-de-ferro.svg' %}" alt="Espada de Ferro">
+                    {% elif produto.nome == "Escudo do Guardião" %}
+                        <img class="card-cover item-art" src="{% static 'taverna/img/itens/escudo-do-guardiao.svg' %}" alt="Escudo do Guardião">
+                    {% elif produto.nome == "Armadura do Explorador" %}
+                        <img class="card-cover item-art" src="{% static 'taverna/img/itens/armadura-do-explorador.svg' %}" alt="Armadura do Explorador">
+                    {% elif produto.nome == "Pergaminho Arcano" %}
+                        <img class="card-cover item-art" src="{% static 'taverna/img/itens/pergaminho-arcano.svg' %}" alt="Pergaminho Arcano">
+                    {% else %}
+                        <img class="card-cover" src="{% static 'taverna/img/placeholder-rpg.svg' %}" alt="Ilustração de item de RPG">
+                    {% endif %}
                 {% endif %}
                 <div class="rpg-card-body product-card-body">
                     <span class="badge-rpg mb-2">{{ produto.categoria.nome }}</span>
