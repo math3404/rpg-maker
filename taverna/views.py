@@ -1,4 +1,5 @@
 from decimal import Decimal, InvalidOperation
+import logging
 from functools import wraps
 
 import requests
@@ -13,6 +14,8 @@ from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_POST
 
 from .forms import AventureiroCreationForm, ContatoForm, PerfilForm, ProdutoForm
+
+logger = logging.getLogger(__name__)
 from .models import Categoria, ContatoMensagem, ItemPedido, Produto
 from .supabase_client import (
     adicionar_integrante,
@@ -55,8 +58,15 @@ def produtos(request):
         response = requests.get("https://fakestoreapi.com/products?limit=4", timeout=7)
         response.raise_for_status()
         produtos_api = response.json()
-    except (requests.RequestException, ValueError):
-        erro_api = "A loja parceira não respondeu agora. Os itens locais continuam disponíveis."
+    except requests.Timeout:
+        logger.exception("Timeout ao consultar a Fake Store API")
+        erro_api = "A loja parceira demorou para responder. Os itens locais continuam disponíveis."
+    except requests.RequestException:
+        logger.exception("Falha de conexão ao consultar a Fake Store API")
+        erro_api = "Não foi possível conectar à loja parceira. Os itens locais continuam disponíveis."
+    except ValueError:
+        logger.exception("A Fake Store API retornou uma resposta JSON inválida")
+        erro_api = "A loja parceira enviou uma resposta inválida. Os itens locais continuam disponíveis."
 
     return render(request, "taverna/produtos.html", {
         "produtos_locais": produtos_locais,
