@@ -1,10 +1,10 @@
 {% extends 'taverna/base.html' %}
-{% block title %}Gerenciar catálogo | RPG Maker{% endblock %}
+{% block title %}Gerenciar loja | RPG Maker{% endblock %}
 {% block content %}
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4"><div><span class="eyebrow">Administração da loja</span><h1 class="mb-1">Catálogo & serviços</h1><p class="muted mb-0">Cadastre, filtre, edite e remova os itens da ludoteca.</p></div><a class="btn btn-gold" href="{% url 'cadastrar_servico' %}">＋ Novo item</a></div>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4"><div><span class="eyebrow">Administração da loja</span><h1 class="mb-1">Loja de itens RPG</h1><p class="muted mb-0">Cadastre, filtre, edite e remova poções, armas, armaduras e artefatos.</p></div><a class="btn btn-gold" href="{% url 'cadastrar_servico' %}">＋ Novo item</a></div>
 <div class="row g-3 mb-4">
-    <div class="col-sm-6 col-lg-3"><div class="stat-card"><span>Total de itens</span><strong>{{ total_servicos }}</strong><small>Registros no catálogo</small></div></div>
-    <div class="col-sm-6 col-lg-3"><div class="stat-card"><span>Disponíveis</span><strong>{{ total_ativos }}</strong><small>Visíveis na ludoteca</small></div></div>
+    <div class="col-sm-6 col-lg-3"><div class="stat-card"><span>Total de itens</span><strong>{{ total_servicos }}</strong><small>Registros na loja</small></div></div>
+    <div class="col-sm-6 col-lg-3"><div class="stat-card"><span>Disponíveis</span><strong>{{ total_ativos }}</strong><small>Visíveis na loja</small></div></div>
     <div class="col-sm-6 col-lg-3"><div class="stat-card"><span>Indisponíveis</span><strong>{{ total_inativos }}</strong><small>Ocultos da loja</small></div></div>
     <div class="col-sm-6 col-lg-3"><div class="stat-card"><span>Soma dos preços ativos</span><strong class="fs-4">R$ {{ valor_catalogo|floatformat:2 }}</strong><small>Valor de referência</small></div></div>
 </div>
@@ -20,7 +20,7 @@
 <div class="table-card table-responsive"><table class="table"><thead><tr><th>Item</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Status</th><th class="text-end">Ações</th></tr></thead><tbody>
 {% for servico in servicos %}<tr>
     <td><strong>{{ servico.nome }}</strong><div class="muted small">{{ servico.descricao|truncatechars:75 }}</div></td><td>{{ servico.categoria.nome }}</td><td>R$ {{ servico.preco|floatformat:2 }}</td><td>{{ servico.estoque }}</td><td>{% if servico.ativo %}<span class="badge-rpg">Ativo</span>{% else %}<span class="badge text-bg-secondary">Inativo</span>{% endif %}</td>
-    <td class="text-end text-nowrap"><a class="btn btn-outline-gold btn-sm" href="{% url 'editar_servico' servico.id %}">Editar</a> <form class="inline-form" method="post" action="{% url 'excluir_servico' servico.id %}" onsubmit="return confirm('Excluir este item do catálogo?')">{% csrf_token %}<button class="btn btn-danger-soft btn-sm" type="submit">Excluir</button></form></td>
+    <td class="text-end text-nowrap"><a class="btn btn-outline-gold btn-sm" href="{% url 'editar_servico' servico.id %}">Editar</a> <form class="inline-form" method="post" action="{% url 'excluir_servico' servico.id %}" onsubmit="return confirm('Excluir este item da loja?')">{% csrf_token %}<button class="btn btn-danger-soft btn-sm" type="submit">Excluir</button></form></td>
 </tr>{% endfor %}
 </tbody></table></div>
 {% else %}<div class="empty-state"><div class="empty-icon">🧾</div><h3>Nenhum resultado encontrado</h3><p>Altere os filtros ou cadastre um novo item.</p></div>{% endif %}
