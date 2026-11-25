@@ -55,9 +55,12 @@ def produtos(request):
     produtos_api = []
     erro_api = None
     try:
-        response = requests.get("https://fakestoreapi.com/products?limit=4", timeout=7)
+        response = requests.get("https://dummyjson.com/products?limit=4", timeout=10)
         response.raise_for_status()
-        produtos_api = response.json()
+        dados_api = response.json()
+        produtos_api = dados_api.get("products", [])
+        for item in produtos_api:
+            item["image"] = item.get("thumbnail") or (item.get("images") or [""])[0]
     except requests.Timeout:
         logger.exception("Timeout ao consultar a Fake Store API")
         erro_api = "A loja parceira demorou para responder. Os itens locais continuam disponíveis."
