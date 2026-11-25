@@ -1,0 +1,8 @@
+{% extends "admin/base.html" %}
+{% block title %}RPG Maker | Painel do Mestre{% endblock %}
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">RPG Maker — Administração da Guilda</a></h1>
+{% endblock %}
+{% block nav-global %}
+<div style="padding:8px 0"><a href="{% url 'painel_mestre' %}">← Abrir painel de gestão da RPG Maker</a></div>
+{% endblock %}

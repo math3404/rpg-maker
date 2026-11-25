@@ -1,0 +1,28 @@
+{% extends 'taverna/base.html' %}
+{% block title %}Contato | RPG Maker{% endblock %}
+{% block content %}
+<header class="page-heading">
+    <span class="eyebrow">Mensagem por corvo ou pergaminho</span>
+    <h1>Fale com a taverna</h1>
+    <p>Envie dúvidas, sugestões ou solicitações. Você não precisa entrar na sua conta para falar com nossa equipe.</p>
+</header>
+<section class="form-card">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-row">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+            </div>
+        {% endfor %}
+        {% if form.non_field_errors %}<div class="form-error mb-3">{{ form.non_field_errors }}</div>{% endif %}
+        <button class="btn btn-gold btn-lg w-100 mt-2" type="submit">✉ Enviar mensagem à guilda</button>
+    </form>
+</section>
+<div class="row g-3 mt-4">
+    <div class="col-md-4"><div class="feature-card text-center"><div class="feature-icon mx-auto">📍</div><h3>Localização</h3><p>Praia Grande, São Paulo</p></div></div>
+    <div class="col-md-4"><div class="feature-card text-center"><div class="feature-icon mx-auto">🕰️</div><h3>Horários</h3><p>Consulte os horários e disponibilidade pelo formulário de contato.</p></div></div>
+    <div class="col-md-4"><div class="feature-card text-center"><div class="feature-icon mx-auto">📜</div><h3>Solicitações</h3><p>Reservas, dúvidas, sugestões e mensagens para a equipe.</p></div></div>
+</div>
+{% endblock %}

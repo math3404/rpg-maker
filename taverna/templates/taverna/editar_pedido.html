@@ -1,0 +1,12 @@
+{% extends 'taverna/base.html' %}
+{% block title %}Editar pedido | RPG Maker{% endblock %}
+{% block content %}
+<div class="page-heading mb-4"><span class="eyebrow">Atualizar seleção</span><h1>Editar pedido</h1><p>Altere a quantidade de {{ item.produto.nome }} na sua mochila.</p></div>
+<section class="form-card narrow">
+    <form method="post">{% csrf_token %}
+        <div class="form-row"><label for="quantidade">Quantidade</label><input class="form-control" type="number" min="1" step="1" id="quantidade" name="quantidade" value="{{ item.quantidade }}" required></div>
+        <button class="btn btn-gold w-100" type="submit">Salvar quantidade</button>
+    </form>
+    <div class="auth-note"><a href="{% url 'meus_pedidos' %}">← Voltar aos pedidos</a></div>
+</section>
+{% endblock %}

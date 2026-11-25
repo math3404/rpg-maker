@@ -1,0 +1,79 @@
+{% extends 'taverna/base.html' %}
+{% load static %}
+{% block title %}Ludoteca | RPG Maker{% endblock %}
+{% block content %}
+<header class="page-heading">
+    <span class="eyebrow">Inventário da taverna</span>
+    <h1>Ludoteca & itens de aventura</h1>
+    <p>Explore os jogos cadastrados em nosso catálogo e descubra itens de lojas parceiras.</p>
+</header>
+<div class="section-title">
+    <div><h2>Acervo do RPG Maker</h2><p>Itens do banco de dados local • compra disponível para usuários autenticados</p></div>
+    <span class="badge-rpg">Catálogo local</span>
+</div>
+<div class="row g-4 product-grid">
+    {% for produto in produtos_locais %}
+        <div class="col-sm-6 col-lg-4 col-xl-3">
+            <article class="rpg-card product-card">
+                {% if produto.foto %}
+                    <img class="card-cover" src="{{ produto.foto }}" alt="{{ produto.nome }}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{% static "taverna/img/placeholder-rpg.svg" %}'">
+                {% else %}
+                    <img class="card-cover" src="{% static 'taverna/img/placeholder-rpg.svg' %}" alt="Ilustração de aventura RPG">
+                {% endif %}
+                <div class="rpg-card-body product-card-body">
+                    <span class="badge-rpg mb-2">{{ produto.categoria.nome }}</span>
+                    <h3>{{ produto.nome }}</h3>
+                    <p class="muted small flex-grow-1">{{ produto.descricao|truncatechars:120 }}</p>
+                    <div class="product-card-footer">
+                        <div class="price-block">
+                            <span class="price-caption">Preço</span>
+                            <strong class="price-tag">R$ {{ produto.preco|floatformat:2 }}</strong>
+                        </div>
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'adicionar_ao_pedido' produto.id %}" method="post" class="purchase-form">
+                                {% csrf_token %}
+                                <button class="btn btn-gold btn-sm purchase-button" type="submit" aria-label="Comprar {{ produto.nome }}">
+                                    <span aria-hidden="true">⚔</span> Comprar
+                                </button>
+                            </form>
+                        {% else %}
+                            <a class="btn btn-outline-gold btn-sm purchase-button" href="{% url 'login' %}?next={% url 'produtos' %}">Entrar para comprar</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <div class="empty-icon">📦</div>
+                <h3>O catálogo está vazio</h3>
+                <p>Os itens locais aparecerão aqui quando forem cadastrados pelo painel administrativo.</p>
+                {% if user.is_staff %}<a class="btn btn-gold mt-2" href="{% url 'cadastrar_servico' %}">Cadastrar primeiro produto</a>{% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="section-title mt-5">
+    <div><h2>Achados de parceiros</h2><p>Produtos externos carregados por uma API REST.</p></div>
+    <span class="badge-rpg">API externa</span>
+</div>
+{% if erro_api %}<div class="alert alert-warning">{{ erro_api }}</div>{% endif %}
+<div class="row g-4">
+    {% for item in produtos_api %}
+        <div class="col-sm-6 col-lg-3">
+            <article class="rpg-card">
+                <img class="card-cover card-cover-api" src="{{ item.image|default:'' }}" alt="{{ item.title }}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{% static "taverna/img/placeholder-rpg.svg" %}'">
+                <div class="rpg-card-body">
+                    <h3 class="h5">{{ item.title|truncatechars:48 }}</h3>
+                    <p class="muted small flex-grow-1">{{ item.description|truncatechars:100 }}</p>
+                    <div class="price-block partner-price"><span class="price-caption">Preço na loja parceira</span><strong class="price-tag">US$ {{ item.price|floatformat:2 }}</strong></div>
+                </div>
+            </article>
+        </div>
+    {% empty %}
+        {% if not erro_api %}<div class="col-12"><div class="empty-state">Nenhum produto externo disponível no momento.</div></div>{% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

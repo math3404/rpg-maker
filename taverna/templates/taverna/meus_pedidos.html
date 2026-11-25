@@ -1,0 +1,28 @@
+{% extends 'taverna/base.html' %}
+{% load static %}
+{% block title %}Meus pedidos | RPG Maker{% endblock %}
+{% block content %}
+<header class="page-heading"><span class="eyebrow">Sua mochila</span><h1>Meus pedidos</h1><p>Todos os produtos que você selecionou na ludoteca estão reunidos aqui.</p></header>
+{% if pedidos %}
+    <div class="table-card table-responsive">
+        <table class="table">
+            <thead><tr><th>Produto</th><th>Preço unitário</th><th>Quantidade</th><th>Subtotal</th><th class="text-end">Ações</th></tr></thead>
+            <tbody>
+            {% for item in pedidos %}
+                <tr>
+                    <td><div class="d-flex align-items-center gap-3">{% if item.produto.foto %}<img src="{{ item.produto.foto }}" alt="{{ item.produto.nome }}" width="54" height="54" class="rounded" style="object-fit:cover" loading="lazy" onerror="this.onerror=null;this.src='{% static "taverna/img/placeholder-rpg.svg" %}'">{% else %}<img src="{% static 'taverna/img/placeholder-rpg.svg' %}" alt="Ilustração RPG" width="54" height="54" class="rounded" style="object-fit:cover">{% endif %}<strong>{{ item.produto.nome }}</strong></div></td>
+                    <td>R$ {{ item.produto.preco|floatformat:2 }}</td><td>{{ item.quantidade }}</td><td class="text-gold fw-bold">R$ {{ item.subtotal|floatformat:2 }}</td>
+                    <td class="text-end"><a class="btn btn-outline-gold btn-sm" href="{% url 'editar_pedido' item.id %}">Editar</a> <form class="inline-form" method="post" action="{% url 'remover_pedido' item.id %}" onsubmit="return confirm('Remover este item dos pedidos?')">{% csrf_token %}<button class="btn btn-danger-soft btn-sm" type="submit">Excluir</button></form></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4 p-4 rpg-card">
+        <div><span class="muted small">Valor total da seleção</span><div class="price-tag fs-3">R$ {{ total_geral|floatformat:2 }}</div></div>
+        <a class="btn btn-gold" href="{% url 'produtos' %}">Continuar comprando</a>
+    </div>
+{% else %}
+    <div class="empty-state"><div class="empty-icon">🎒</div><h2 class="h3">Sua mochila está vazia</h2><p>Explore a ludoteca e adicione os itens que deseja levar para sua aventura.</p><a class="btn btn-gold mt-2" href="{% url 'produtos' %}">Explorar ludoteca</a></div>
+{% endif %}
+{% endblock %}

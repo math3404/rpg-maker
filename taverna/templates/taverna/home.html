@@ -1,0 +1,47 @@
+{% extends 'taverna/base.html' %}
+{% block title %}RPG Maker | A taverna dos aventureiros{% endblock %}
+{% block content %}
+<section class="hero-panel">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+            <div class="hero-copy">
+                <span class="eyebrow">Sua próxima aventura começa aqui</span>
+                <h1>Entre, aventureiro.<br>Há uma mesa esperando por você.</h1>
+                <p>Reúna sua party, escolha seus jogos e descubra um refúgio para campanhas épicas, estratégia, fantasia e boas histórias.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-gold btn-lg px-4" href="{% url 'produtos' %}">⚔ Explorar a Ludoteca</a>
+                    <a class="btn btn-outline-gold btn-lg px-4" href="{% url 'quem_somos' %}">Conhecer a Guilda</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 hero-side"><div class="d20" aria-label="Dado de vinte lados">20</div></div>
+    </div>
+</section>
+
+<div class="divider-ornament">✧ ✧ ✧</div>
+<div class="page-heading mb-4">
+    <span class="eyebrow">O que você encontra por aqui</span>
+    <h2>Prepare seus dados e escolha sua jornada</h2>
+    <p>Uma casa feita para quem gosta de reunir pessoas, explorar mundos e criar memórias ao redor da mesa.</p>
+</div>
+<section class="feature-grid">
+    <article class="feature-card">
+        <div class="feature-icon">🎲</div>
+        <h3>Acervo de aventuras</h3>
+        <p>Jogos de tabuleiro, estratégia e experiências para grupos de todos os tamanhos e estilos.</p>
+    </article>
+    <article class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Uma guilda para todos</h3>
+        <p>Conheça nossa equipe, encontre novos companheiros de mesa e compartilhe sua paixão por jogos.</p>
+    </article>
+    <article class="feature-card">
+        <div class="feature-icon">📜</div>
+        <h3>Missões e encontros</h3>
+        <p>Entre em contato para tirar dúvidas, enviar sugestões ou combinar sua próxima sessão.</p>
+    </article>
+</section>
+<div class="text-center mt-5">
+    <a class="btn btn-outline-gold px-4" href="{% url 'contato' %}">Falar com a taverna →</a>
+</div>
+{% endblock %}

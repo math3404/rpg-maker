@@ -1,0 +1,20 @@
+{% extends 'taverna/base.html' %}
+{% block title %}Novo aventureiro | RPG Maker{% endblock %}
+{% block content %}
+<div class="page-heading mb-4"><span class="eyebrow">Novo integrante da comunidade</span><h1>Crie sua conta</h1><p>Cadastre-se para montar seus pedidos e acompanhar suas aventuras.</p></div>
+<section class="form-card narrow">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-row">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}<div class="helptext">{{ field.help_text|safe }}</div>{% endif %}
+                {% for error in field.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+            </div>
+        {% endfor %}
+        <button class="btn btn-gold btn-lg w-100 mt-2" type="submit">Criar conta</button>
+    </form>
+    <div class="auth-note">Já faz parte da guilda? <a href="{% url 'login' %}">Entre na sua conta</a>.</div>
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'taverna/base.html' %}
+{% load static %}
+{% block title %}A Guilda | RPG Maker{% endblock %}
+{% block content %}
+<header class="page-heading">
+    <span class="eyebrow">Os guardiões da taverna</span>
+    <h1>Conheça a Guilda</h1>
+    <p>Somos pessoas apaixonadas por jogos, fantasia e por criar o cenário perfeito para histórias inesquecíveis.</p>
+</header>
+{% if erro_integrantes %}
+    <div class="alert alert-warning" role="alert">Não foi possível carregar os integrantes do Supabase. {{ erro_integrantes }}</div>
+{% endif %}
+<div class="row g-4 justify-content-center">
+    {% for membro in integrantes %}
+        <div class="col-sm-6 col-lg-4">
+            <article class="rpg-card text-center">
+                <div class="portrait-frame">
+                    {% if membro.foto_url %}<img src="{{ membro.foto_url }}" alt="Retrato de {{ membro.nome }}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{% static "taverna/img/placeholder-rpg.svg" %}'">{% else %}<img src="{% static 'taverna/img/placeholder-rpg.svg' %}" alt="Retrato padrão RPG" loading="lazy">{% endif %}
+                </div>
+                <div class="rpg-card-body align-items-center">
+                    <h2 class="h4 mb-2">{{ membro.nome }}</h2>
+                    <span class="badge-rpg mb-3">{{ membro.cargo }}</span>
+                    <p class="muted small mb-0">{{ membro.biografia }}</p>
+                </div>
+            </article>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <div class="empty-icon">🧙</div>
+                <h3>A guilda ainda está sendo reunida</h3>
+                {% if not supabase_configurado %}
+                    <p>Configure a conexão do Supabase para carregar aqui os integrantes cadastrados no banco remoto.</p>
+                {% else %}
+                    <p>Assim que os primeiros integrantes forem cadastrados, seus retratos e histórias aparecerão aqui.</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<div class="divider-ornament">✧ ✧ ✧</div>
+<div class="row align-items-center g-4">
+    <div class="col-lg-7">
+        <span class="eyebrow">Nossa história</span>
+        <h2>Mais do que jogos: um ponto de encontro.</h2>
+        <p class="muted">A RPG Maker nasceu da vontade de aproximar pessoas em volta de uma mesa. Aqui, cada partida é uma nova jornada e cada visitante pode se tornar parte da história.</p>
+        <a class="btn btn-gold mt-2" href="{% url 'contato' %}">Venha nos conhecer</a>
+    </div>
+    <div class="col-lg-5"><div class="feature-card text-center"><div class="display-3 mb-3">🏰 🎲 🗺️</div><h3>Um salão para sua party</h3><p>Escolha seu grupo, prepare a estratégia e deixe a próxima aventura começar.</p></div></div>
+</div>
+{% endblock %}

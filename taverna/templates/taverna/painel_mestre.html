@@ -1,0 +1,18 @@
+{% extends 'taverna/base.html' %}
+{% block title %}Painel do Mestre | RPG Maker{% endblock %}
+{% block content %}
+<section class="dashboard-welcome"><span class="eyebrow">Área administrativa</span><h1>Painel do Mestre</h1><p>Gerencie a operação da RPG Maker. O painel administrativo completo do Django continua disponível para usuários com perfil de administrador.</p><div class="hero-actions"><a class="btn btn-gold" href="{% url 'admin:index' %}">Abrir administração Django</a></div></section>
+<div class="row g-3 mb-4">
+    <div class="col-sm-4"><div class="stat-card"><span>Mensagens recebidas</span><strong>{{ total_contatos }}</strong></div></div>
+    <div class="col-sm-4"><div class="stat-card"><span>Itens no catálogo</span><strong>{{ total_servicos }}</strong></div></div>
+    <div class="col-sm-4"><div class="stat-card"><span>Itens em pedidos</span><strong>{{ total_pedidos }}</strong></div></div>
+</div>
+<div class="section-title"><div><h2>Ferramentas da guilda</h2><p>Atalhos para as páginas administrativas exigidas no projeto.</p></div></div>
+<section class="management-grid">
+    <a class="rpg-card management-link" href="{% url 'gerenciar_contatos' %}"><span class="tile-icon">✉️</span><span><h3>Contatos</h3><p>Leia e exclua mensagens enviadas pelo formulário público.</p><span>Gerenciar contatos →</span></span></a>
+    <a class="rpg-card management-link" href="{% url 'gerenciar_servicos' %}"><span class="tile-icon">🎲</span><span><h3>Serviços & produtos</h3><p>Filtre o catálogo, consulte indicadores, adicione, edite e exclua itens.</p><span>Gerenciar catálogo →</span></span></a>
+    <a class="rpg-card management-link" href="{% url 'gerenciar_equipe' %}"><span class="tile-icon">🧙</span><span><h3>Equipe</h3><p>Gerencie os integrantes armazenados no banco remoto Supabase.</p><span>Gerenciar equipe →</span></span></a>
+    <a class="rpg-card management-link" href="{% url 'relatorios' %}"><span class="tile-icon">📊</span><span><h3>Relatórios</h3><p>Visualize gráficos e estatísticas do catálogo.</p><span>Ver relatórios →</span></span></a>
+</section>
+{% if not supabase_configurado %}<div class="alert alert-warning mt-4">O Supabase ainda não está configurado. A seção Equipe ficará disponível após preencher as variáveis de ambiente.</div>{% endif %}
+{% endblock %}

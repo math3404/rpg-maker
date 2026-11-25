@@ -1,0 +1,19 @@
+{% extends 'taverna/base.html' %}
+{% load static %}
+{% block title %}Equipe | RPG Maker{% endblock %}
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4"><div><span class="eyebrow">Banco remoto Supabase</span><h1 class="mb-1">Integrantes da guilda</h1><p class="muted mb-0">Gerencie os membros exibidos na página pública Quem Somos.</p></div><a class="btn btn-gold" href="{% url 'cadastrar_integrante' %}">＋ Novo integrante</a></div>
+{% if erro_integrantes %}<div class="alert alert-warning">{{ erro_integrantes }}</div>{% endif %}
+{% if integrantes %}
+<div class="table-card table-responsive"><table class="table"><thead><tr><th>Retrato</th><th>Nome</th><th>Cargo / classe</th><th>Biografia</th><th class="text-end">Ações</th></tr></thead><tbody>
+{% for integrante in integrantes %}<tr>
+    <td>{% if integrante.foto_url %}<img src="{{ integrante.foto_url }}" alt="{{ integrante.nome }}" width="48" height="48" class="rounded-circle" style="object-fit:cover" loading="lazy" onerror="this.onerror=null;this.src='{% static "taverna/img/placeholder-rpg.svg" %}'">{% else %}<img src="{% static 'taverna/img/placeholder-rpg.svg' %}" alt="Retrato padrão RPG" width="48" height="48" class="rounded-circle" style="object-fit:cover">{% endif %}</td>
+    <td><strong>{{ integrante.nome }}</strong><div class="muted small">ID: {{ integrante.id }}</div></td><td>{{ integrante.cargo }}</td><td style="min-width:220px;max-width:360px;white-space:normal">{{ integrante.biografia|truncatechars:130 }}</td>
+    <td class="text-end text-nowrap"><a class="btn btn-outline-gold btn-sm" href="{% url 'editar_integrante' integrante.id %}">Editar</a> <form class="inline-form" method="post" action="{% url 'excluir_integrante' integrante.id %}" onsubmit="return confirm('Excluir este integrante do Supabase?')">{% csrf_token %}<button class="btn btn-danger-soft btn-sm" type="submit">Excluir</button></form></td>
+</tr>{% endfor %}
+</tbody></table></div>
+{% else %}
+<div class="empty-state"><div class="empty-icon">🧙‍♀️</div><h3>Nenhum integrante encontrado</h3><p>{% if supabase_configurado %}A tabela está vazia. Cadastre o primeiro integrante.{% else %}Configure o Supabase e crie a tabela <code>public.integrantes</code> para habilitar este gerenciamento.{% endif %}</p><a class="btn btn-gold mt-2" href="{% url 'cadastrar_integrante' %}">Cadastrar integrante</a></div>
+{% endif %}
+<div class="mt-4"><a href="{% url 'painel_mestre' %}" class="btn btn-outline-gold">Voltar ao painel</a></div>
+{% endblock %}

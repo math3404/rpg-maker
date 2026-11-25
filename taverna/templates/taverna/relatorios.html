@@ -1,0 +1,30 @@
+{% extends 'taverna/base.html' %}
+{% block title %}Relatórios | RPG Maker{% endblock %}
+{% block extra_head %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>{% endblock %}
+{% block content %}
+<header class="page-heading"><span class="eyebrow">Observatório da guilda</span><h1>Relatórios do catálogo</h1><p>Indicadores e gráficos gerados diretamente a partir dos serviços e produtos cadastrados.</p></header>
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="stat-card"><span>Total cadastrado</span><strong>{{ total_servicos }}</strong><small>Itens no banco local</small></div></div>
+    <div class="col-md-4"><div class="stat-card"><span>Disponíveis</span><strong>{{ servicos_ativos }}</strong><small>Visíveis na ludoteca</small></div></div>
+    <div class="col-md-4"><div class="stat-card"><span>Indisponíveis</span><strong>{{ servicos_inativos }}</strong><small>Ocultos do público</small></div></div>
+</div>
+<div class="row g-4">
+    <div class="col-lg-7"><div class="rpg-card p-3 p-lg-4 h-100"><h2 class="h4 mb-3">Itens por categoria</h2><canvas id="categoryChart" height="210" aria-label="Gráfico de itens por categoria"></canvas></div></div>
+    <div class="col-lg-5"><div class="rpg-card p-3 p-lg-4 h-100"><h2 class="h4 mb-3">Situação do catálogo</h2><canvas id="statusChart" height="210" aria-label="Gráfico de situação do catálogo"></canvas></div></div>
+</div>
+<div class="mt-4"><a class="btn btn-outline-gold" href="{% url 'painel_mestre' %}">Voltar ao painel</a></div>
+{{ categorias_dados|json_script:"categorias-data" }}
+{{ quantidades_dados|json_script:"quantidades-data" }}
+<script>
+(function () {
+    const categories = JSON.parse(document.getElementById('categorias-data').textContent);
+    const quantities = JSON.parse(document.getElementById('quantidades-data').textContent);
+    const gold = '#d8b56b';
+    const green = '#6c9a77';
+    const muted = '#b7a991';
+    const common = { responsive: true, plugins: { legend: { labels: { color: muted } } }, scales: { x: { ticks: { color: muted }, grid: { color: 'rgba(216,181,107,.10)' } }, y: { beginAtZero: true, ticks: { color: muted, precision: 0 }, grid: { color: 'rgba(216,181,107,.10)' } } } };
+    new Chart(document.getElementById('categoryChart'), { type: 'bar', data: { labels: categories, datasets: [{ label: 'Quantidade', data: quantities, backgroundColor: 'rgba(108,154,119,.8)', borderColor: green, borderWidth: 1, borderRadius: 7 }] }, options: common });
+    new Chart(document.getElementById('statusChart'), { type: 'doughnut', data: { labels: ['Disponíveis', 'Indisponíveis'], datasets: [{ data: [{{ servicos_ativos }}, {{ servicos_inativos }}], backgroundColor: [green, gold], borderColor: ['#24392b', '#42331b'], borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: muted } } } } });
+})();
+</script>
+{% endblock %}

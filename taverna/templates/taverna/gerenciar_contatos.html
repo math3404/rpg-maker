@@ -1,0 +1,17 @@
+{% extends 'taverna/base.html' %}
+{% block title %}Mensagens recebidas | RPG Maker{% endblock %}
+{% block content %}
+<header class="page-heading"><span class="eyebrow">Caixa de entrada da guilda</span><h1>Mensagens recebidas</h1><p>Leia as dúvidas e solicitações enviadas pelo formulário público. A exclusão é permanente.</p></header>
+<div class="stat-card mb-4" style="max-width:220px"><span>Mensagens recebidas</span><strong>{{ total_contatos }}</strong><small>Registros armazenados</small></div>
+{% if contatos %}
+<div class="table-card table-responsive">
+<table class="table"><thead><tr><th>Remetente</th><th>Contato</th><th>Mensagem</th><th>Data</th><th class="text-end">Ação</th></tr></thead><tbody>
+{% for contato in contatos %}<tr>
+    <td><strong>{{ contato.nome }}</strong></td><td><a href="mailto:{{ contato.email }}">{{ contato.email }}</a><div class="muted small">{{ contato.telefone|default:"Sem telefone" }}</div></td>
+    <td style="min-width:240px;max-width:420px;white-space:normal">{{ contato.mensagem|linebreaksbr }}</td><td class="small">{{ contato.data_envio|date:"d/m/Y H:i" }}</td>
+    <td class="text-end"><form method="post" action="{% url 'excluir_contato' contato.id %}" onsubmit="return confirm('Excluir esta mensagem?')">{% csrf_token %}<button class="btn btn-danger-soft btn-sm" type="submit">Excluir</button></form></td>
+</tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty-state"><div class="empty-icon">📭</div><h3>Nenhuma mensagem por enquanto</h3><p>Quando alguém enviar o formulário de contato, a mensagem aparecerá aqui.</p></div>{% endif %}
+<div class="mt-4"><a href="{% url 'painel_mestre' %}" class="btn btn-outline-gold">Voltar ao painel</a></div>
+{% endblock %}
