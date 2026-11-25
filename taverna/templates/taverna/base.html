@@ -19,7 +19,7 @@
         <div class="container">
             <a class="navbar-brand brand-mark" href="{% url 'home' %}">
                 <span class="brand-emblem" aria-hidden="true">♜</span>
-                <span>RPG <b>MAKER</b><small>TAVERNA • LUDOTECA • RPG</small></span>
+                <span>RPG <b>MAKER</b><small>GUILDA • AVENTURAS • RPG</small></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menu">
                 <span class="navbar-toggler-icon"></span>
@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                     <li class="nav-item"><a class="nav-link" href="{% url 'quem_somos' %}">A Guilda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'produtos' %}">Ludoteca</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'produtos' %}">Salão das Aventuras</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'contato' %}">Contato</a></li>
                     {% if user.is_authenticated %}
                         {% if user.is_staff %}
@@ -35,7 +35,7 @@
                             <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin Django</a></li>
                         {% else %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Minha área</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'meus_pedidos' %}">Meus pedidos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'meus_pedidos' %}">Minha mochila</a></li>
                         {% endif %}
                         <li class="nav-item ms-lg-2">
                             <form action="{% url 'logout' %}" method="post">
@@ -44,7 +44,8 @@
                             </form>
                         </li>
                     {% else %}
-                        <li class="nav-item ms-lg-2"><a class="btn btn-gold btn-sm" href="{% url 'login' %}">Entrar na guilda</a></li>
+                        <li class="nav-item ms-lg-2"><a class="btn btn-outline-gold btn-sm" href="{% url 'login' %}">Entrar</a></li>
+                        <li class="nav-item"><a class="btn btn-gold btn-sm" href="{% url 'cadastrar' %}">Cadastrar</a></li>
                     {% endif %}
                 </ul>
             </div>
