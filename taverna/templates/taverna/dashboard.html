@@ -4,15 +4,15 @@
 <section class="dashboard-welcome">
     <span class="eyebrow">Área do aventureiro</span>
     <h1>Saudações, {{ nome_exibicao }}!</h1>
-    <p>Seu espaço pessoal está pronto. Gerencie seu perfil e acompanhe os itens que escolheu na ludoteca.</p>
+    <p>Seu espaço pessoal está pronto. Gerencie seu perfil e acompanhe os itens que escolheu no Salão das Aventuras.</p>
 </section>
-<div class="section-title"><div><h2>Seu acampamento</h2><p>Atalhos e informações da sua conta.</p></div><span class="badge-rpg">{{ total_pedidos }} item(ns) nos pedidos</span></div>
+<div class="section-title"><div><h2>Seu acampamento</h2><p>Atalhos e informações da sua conta.</p></div><span class="badge-rpg">{{ total_pedidos }} item(ns) na mochila</span></div>
 <section class="management-grid">
     <a class="rpg-card management-link" href="{% url 'editar_perfil' %}">
         <span class="tile-icon">🧝</span><span><h3>Editar perfil</h3><p>Atualize seu nome e e-mail e mantenha seus dados em dia.</p><span>Gerenciar perfil →</span></span>
     </a>
     <a class="rpg-card management-link" href="{% url 'meus_pedidos' %}">
-        <span class="tile-icon">🎒</span><span><h3>Meus pedidos</h3><p>Veja os jogos adicionados e confira o valor total da sua seleção.</p><span>Abrir pedidos →</span></span>
+        <span class="tile-icon">🎒</span><span><h3>Minha mochila</h3><p>Veja os itens adicionados e confira o valor total da sua seleção.</p><span>Abrir mochila →</span></span>
     </a>
 </section>
 {% endblock %}
