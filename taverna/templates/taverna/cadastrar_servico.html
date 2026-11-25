@@ -1,7 +1,7 @@
 {% extends 'taverna/base.html' %}
 {% block title %}Novo item | RPG Maker{% endblock %}
 {% block content %}
-<div class="page-heading mb-4"><span class="eyebrow">Catálogo da ludoteca</span><h1>Novo item</h1><p>Adicione um jogo ou serviço ao banco de dados local.</p></div>
+<div class="page-heading mb-4"><span class="eyebrow">Loja da guilda</span><h1>Novo item de RPG</h1><p>Adicione uma poção, arma, armadura ou artefato ao inventário da loja.</p></div>
 <section class="form-card">
     <form method="post" novalidate>{% csrf_token %}
         {% for field in form %}
