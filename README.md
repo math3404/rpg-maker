@@ -25,7 +25,7 @@ Projeto Django com tema de fantasia/RPG, reaproveitando a base enviada. O catál
 
 ## Páginas e funcionalidades
 
-- Home, Quem Somos, Ludoteca e Contato público.
+- Home, Quem Somos, Salão das aventuras e Contato público.
 - Cadastro, login, logout e recuperação nativa de senha do Django.
 - Login de administrador redireciona para `/admin/`; clientes seguem para `/dashboard/`.
 - Perfil do cliente, alteração de senha e Meus Pedidos.
