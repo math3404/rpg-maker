@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import PasswordResetForm, UserCreationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 from .models import ContatoMensagem, Produto
 
@@ -21,6 +22,33 @@ class AventureiroCreationForm(UserCreationForm):
     def apply_theme(self):
         for field in self.fields.values():
             field.widget.attrs.setdefault("class", "form-control")
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip()
+        if User.objects.filter(email__iexact=email).exists():
+            raise ValidationError("Este e-mail já está vinculado a outra conta. Utilize outro endereço.")
+        return email
+
+
+class UsuarioPasswordResetForm(PasswordResetForm):
+    username = forms.CharField(
+        label="Nome de usuário",
+        max_length=150,
+        widget=forms.TextInput(attrs={"class": "form-control", "autocomplete": "username"}),
+    )
+    email = forms.EmailField(
+        label="E-mail da conta",
+        widget=forms.EmailInput(attrs={"class": "form-control", "autocomplete": "email"}),
+    )
+
+    def get_users(self, email):
+        username = self.cleaned_data.get("username", "").strip()
+        usuarios = User._default_manager.filter(
+            username__iexact=username,
+            email__iexact=email,
+            is_active=True,
+        )
+        return (usuario for usuario in usuarios if usuario.has_usable_password())
 
 
 class ContatoForm(forms.ModelForm):
@@ -54,6 +82,12 @@ class PerfilForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs["class"] = "form-control"
+
+    def clean_email(self):
+        email = (self.cleaned_data.get("email") or "").strip()
+        if email and User.objects.filter(email__iexact=email).exclude(pk=self.instance.pk).exists():
+            raise ValidationError("Este e-mail já está vinculado a outra conta. Utilize outro endereço.")
+        return email
 
 
 class ProdutoForm(forms.ModelForm):
