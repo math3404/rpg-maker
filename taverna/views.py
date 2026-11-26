@@ -5,7 +5,7 @@ from functools import wraps
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView, PasswordChangeView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
 from django.db import transaction
 from django.db.models import Count, Q
 from django.http import HttpResponseForbidden
@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_POST
 
-from .forms import AventureiroCreationForm, ContatoForm, PerfilForm, ProdutoForm
+from .forms import AventureiroCreationForm, ContatoForm, PerfilForm, ProdutoForm, UsuarioPasswordResetForm
 
 logger = logging.getLogger(__name__)
 from .models import Categoria, ContatoMensagem, ItemPedido, Produto
@@ -104,6 +104,13 @@ class GuildLoginView(LoginView):
         if self.request.user.is_staff:
             return reverse("admin:index")
         return reverse("dashboard")
+
+
+class GuildPasswordResetView(PasswordResetView):
+    form_class = UsuarioPasswordResetForm
+    template_name = "taverna/password_reset.html"
+    email_template_name = "registration/password_reset_email.html"
+    subject_template_name = "registration/password_reset_subject.txt"
 
 
 class GuildPasswordChangeView(PasswordChangeView):
